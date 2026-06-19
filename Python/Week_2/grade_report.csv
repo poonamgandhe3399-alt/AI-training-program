@@ -1,0 +1,5 @@
+ID,Name,Average,Letter Grade,Subjects
+1,Alice,76.2,B,Maths=100; Science=67; English=61; History=77
+2,Bob,70.8,B,Maths=75; Science=74; English=68; History=66
+3,Charlie,85.8,A,Maths=94; Science=65; English=97; History=87
+4,Diana,65.2,C,Maths=62; Science=61; English=65; History=73

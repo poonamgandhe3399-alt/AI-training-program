@@ -1,0 +1,11 @@
+{
+    "name": "Alice",
+    "age": 20,
+    "grades": {
+        "Maths": 92,
+        "Science": 88,
+        "English": 95
+    },
+    "active": true,
+    "mentor": null
+}

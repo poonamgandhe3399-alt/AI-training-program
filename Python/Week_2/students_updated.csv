@@ -1,0 +1,6 @@
+name,age,grade,score,pass_fail
+Alice,20,A,92,Pass
+Bob,22,B,78,Fail
+Charlie,21,A+,97,Pass
+Diana,23,B+,85,Fail
+Ethan,20,C,65,Fail

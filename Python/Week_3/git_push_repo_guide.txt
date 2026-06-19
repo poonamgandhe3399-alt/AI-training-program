@@ -1,0 +1,68 @@
+===============================================================================
+GUIDE: HOW TO PUSH A LOCAL DIRECTORY TO A GITHUB REPO WITH AN EXISTING README
+===============================================================================
+
+This guide resolves the "non-fast-forward" error that happens when your online 
+GitHub repository has a README file, but your local machine folder does not.
+
+Follow these steps sequentially in your terminal or command prompt.
+
+-------------------------------------------------------------------------------
+PHASE 1: INITIALIZE YOUR LOCAL DIRECTORY
+-------------------------------------------------------------------------------
+
+1. Open your terminal (Mac/Linux) or Command Prompt/Git Bash (Windows).
+
+2. Navigate to your project folder:
+   cd /path/to/your/directory
+   -> EXPLANATION: Changes your terminal's focus to your project directory.
+
+3. Initialize Git in the folder:
+   git init
+   -> EXPLANATION: Creates a hidden '.git' folder, turning your directory into 
+      a local Git repository so it can start tracking changes.
+
+4. Stage all of your files:
+   git add .
+   -> EXPLANATION: The dot (.) tells Git to prepare every single file and folder 
+      in this directory for the upcoming snapshot (commit).
+
+5. Commit your files:
+   git commit -m "Initial commit"
+   -> EXPLANATION: Saves a snapshot of your staged files locally with a 
+      descriptive log message.
+
+6. Ensure your default branch is named 'main':
+   git branch -M main
+   -> EXPLANATION: Renames the default local branch to 'main' to perfectly 
+      match GitHub's default branch naming convention.
+
+
+-------------------------------------------------------------------------------
+PHASE 2: LINK TO GITHUB AND RESOLVE THE README DIFFERENCE
+-------------------------------------------------------------------------------
+
+7. Link your local project to your GitHub repository:
+   git remote add origin https://github.com
+   -> EXPLANATION: Tells your local Git repository the exact web address (URL) 
+      of your GitHub project. Replace the URL with your actual repository URL.
+
+8. Pull the remote README file and merge histories:
+   git pull origin main --allow-unrelated-histories
+   -> EXPLANATION: Crucial step. Because GitHub has a README file and your 
+      local folder doesn't, they have completely separate histories. This flag 
+      forces Git to merge the online README into your local folder safely.
+
+   -> NOTE: Running this command might open a text editor in your terminal 
+      (like Vim or Nano) asking for a merge commit message. 
+      - If it is VIM: Type ':wq' and press Enter to save and exit.
+      - If it is NANO: Press 'Ctrl + O', then 'Enter', then 'Ctrl + X' to exit.
+
+9. Push everything back up to GitHub:
+   git push -u origin main
+   -> EXPLANATION: Uploads your local project files to GitHub. The '-u' flag 
+      remembers this connection, so next time you only need to type 'git push'.
+
+===============================================================================
+END OF FILE
+===============================================================================

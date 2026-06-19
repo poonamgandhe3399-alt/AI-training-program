@@ -1,0 +1,499 @@
+================================================================================
+                     GIT & GITHUB — COMPLETE HTTPS GUIDE
+                     Step-by-Step Instructions with Commands
+================================================================================
+
+________________________________________________________________________________
+SECTION 1: ONE-TIME SETUP (do this once on your machine)
+________________________________________________________________________________
+
+STEP 1: Install Git
+-------------------
+Check if Git is already installed:
+    git --version
+
+If not installed:
+  - Windows : Download from https://git-scm.com/download/win
+  - Mac     : Run  brew install git   (or xcode-select --install)
+  - Ubuntu  : Run  sudo apt install git
+
+
+STEP 2: Set your identity
+--------------------------
+Every commit you make is tagged with your name and email.
+This is stored globally on your machine.
+
+    git config --global user.name  "Your Full Name"
+    git config --global user.email "you@example.com"
+
+Set the default branch name to "main" (modern standard):
+    git config --global init.defaultBranch main
+
+Verify your config was saved:
+    git config --list --global
+
+
+STEP 3: Create a GitHub account
+---------------------------------
+Go to https://github.com and sign up (free).
+
+
+STEP 4: Create a Personal Access Token (PAT)
+----------------------------------------------
+GitHub no longer accepts your account password for Git operations.
+You need a PAT instead.
+
+  a) Go to GitHub -> click your profile photo (top right) -> Settings
+  b) Scroll down -> click "Developer settings" (left sidebar)
+  c) Click "Personal access tokens" -> "Tokens (classic)"
+  d) Click "Generate new token" -> "Generate new token (classic)"
+  e) Give it a name, e.g. "my-laptop-token"
+  f) Set expiration (90 days is safe for learning)
+  g) Under "Select scopes", check the box next to "repo" (full repo access)
+  h) Scroll down -> click "Generate token"
+  i) COPY the token immediately — you will never see it again!
+     It looks like: ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+Save it somewhere safe (password manager, notes app).
+
+
+STEP 5: Cache your credentials (avoid typing token every time)
+---------------------------------------------------------------
+Option A — Cache in memory for 1 hour:
+    git config --global credential.helper 'cache --timeout=3600'
+
+Option B — Store permanently on disk (fine for personal machines):
+    git config --global credential.helper store
+
+After you run either command, the FIRST time you push or clone,
+Git will ask for:
+  Username: your GitHub username
+  Password: paste your PAT (not your GitHub password)
+
+After that, Git remembers it automatically.
+
+
+________________________________________________________________________________
+SECTION 2: CREATE A REPOSITORY ON GITHUB
+________________________________________________________________________________
+
+STEP 6: Create a new repo on GitHub (UI)
+-----------------------------------------
+  a) Go to https://github.com
+  b) Click the "+" icon (top right) -> "New repository"
+  c) Fill in the form:
+
+        Repository name : ai-training-week3
+        Description     : Week 3 SQL and Git project   (optional)
+        Visibility      : Public   (or Private — your choice)
+
+        Initialize with README  -> LEAVE UNCHECKED
+        Add .gitignore          -> LEAVE UNCHECKED
+        Choose a license        -> None
+
+  d) Click "Create repository"
+
+  e) On the next page, copy the HTTPS URL. It looks like:
+        https://github.com/YOUR_USERNAME/ai-training-week3.git
+
+     You will use this URL in the next steps.
+
+
+________________________________________________________________________________
+SECTION 3: START A NEW PROJECT LOCALLY AND PUSH TO GITHUB
+________________________________________________________________________________
+
+STEP 7: Create your project folder
+------------------------------------
+    mkdir ai-training-week3
+    cd ai-training-week3
+
+Explanation:
+  mkdir  -> makes a new folder
+  cd     -> moves you into that folder
+
+
+STEP 8: Initialise Git in the folder
+--------------------------------------
+    git init
+
+Explanation:
+  This creates a hidden .git folder inside your project.
+  That folder is where Git stores all history and config.
+  You only run this ONCE per project.
+
+Expected output:
+  Initialized empty Git repository in /path/to/ai-training-week3/.git/
+
+
+STEP 9: Create a .gitignore file
+----------------------------------
+A .gitignore tells Git which files to NEVER track.
+Create the file with your text editor, or run this in terminal:
+
+  On Mac/Linux:
+    cat > .gitignore << 'IGNORE'
+    __pycache__/
+    *.py[cod]
+    .env
+    venv/
+    .venv/
+    .ipynb_checkpoints/
+    *.csv
+    *.db
+    *.sqlite
+    .DS_Store
+    Thumbs.db
+    IGNORE
+
+  On Windows (PowerShell):
+    Add-Content .gitignore "__pycache__/"
+    Add-Content .gitignore "*.py[cod]"
+    Add-Content .gitignore ".env"
+    Add-Content .gitignore "venv/"
+    Add-Content .gitignore ".ipynb_checkpoints/"
+
+Why this matters:
+  Without .gitignore, Git will try to track everything — including
+  large data files, secrets, and auto-generated junk you do not want
+  in your repository.
+
+
+STEP 10: Create your first file
+---------------------------------
+Create a README.md (standard in every project):
+
+  On Mac/Linux:
+    echo "# AI Training Week 3" > README.md
+    echo "SQL subqueries, CTEs, and Git basics." >> README.md
+
+  Or just create it in any text editor and save it as README.md
+
+
+STEP 11: Check what Git sees
+------------------------------
+    git status
+
+Expected output:
+  Untracked files:
+    .gitignore
+    README.md
+
+  nothing added to commit but untracked files present
+
+Explanation:
+  Git sees the files but has NOT started tracking them yet.
+  "Untracked" means Git is ignoring them for now.
+
+
+STEP 12: Stage the files (git add)
+------------------------------------
+Stage specific files:
+    git add .gitignore README.md
+
+OR stage everything at once:
+    git add .
+
+Run git status again to confirm:
+    git status
+
+Expected output:
+  Changes to be committed:
+    new file:   .gitignore
+    new file:   README.md
+
+Explanation:
+  git add moves files from the "Working Tree" to the "Staging Area".
+  Only staged files will be included in the next commit.
+  Think of it as packing items into a box before sealing it.
+
+
+STEP 13: Make your first commit
+---------------------------------
+    git commit -m "feat: initial project setup"
+
+Explanation:
+  git commit seals the box and saves a permanent snapshot.
+  The -m flag sets the commit message inline.
+  Use a short, meaningful message describing what changed.
+
+  Conventional Commit format (industry standard):
+    feat: add new feature
+    fix: correct a bug
+    docs: update documentation
+    chore: maintenance task
+    refactor: restructure code without changing behaviour
+
+Expected output:
+  [main (root-commit) a1b2c3d] feat: initial project setup
+   2 files changed, 3 insertions(+)
+
+
+STEP 14: Connect your local repo to GitHub
+-------------------------------------------
+    git remote add origin https://github.com/YOUR_USERNAME/ai-training-week3.git
+
+Explanation:
+  This registers the GitHub URL under the nickname "origin".
+  "origin" is the conventional name for your primary remote.
+  You only run this once per project.
+
+Verify the remote was added:
+    git remote -v
+
+Expected output:
+  origin  https://github.com/YOUR_USERNAME/ai-training-week3.git (fetch)
+  origin  https://github.com/YOUR_USERNAME/ai-training-week3.git (push)
+
+
+STEP 15: Push your commits to GitHub
+--------------------------------------
+    git push -u origin main
+
+Explanation:
+  git push  -> sends your local commits to GitHub
+  -u        -> sets "origin main" as the default upstream
+                after this, you can just type  git push  in the future
+  origin    -> the remote nickname we set in Step 14
+  main      -> the branch name
+
+If prompted:
+  Username: your GitHub username
+  Password: paste your PAT from Step 4
+
+After this, refresh your GitHub repo page — your files will appear.
+
+For all future pushes (after the first):
+    git push
+
+
+________________________________________________________________________________
+SECTION 4: CLONE AN EXISTING REPOSITORY
+________________________________________________________________________________
+
+STEP 16: Clone a repo (basic)
+-------------------------------
+Use this when you want to download an existing repository.
+
+    git clone https://github.com/USERNAME/REPOSITORY.git
+
+Example:
+    git clone https://github.com/torvalds/linux.git
+
+What this does:
+  - Creates a new folder named after the repository
+  - Downloads the full project history
+  - Automatically sets "origin" to the GitHub URL
+  - Checks out the default branch (usually main)
+
+
+STEP 17: Clone into a custom folder name
+------------------------------------------
+    git clone https://github.com/USERNAME/ai-training-week3.git my-project
+
+Explanation:
+  Instead of creating a folder called "ai-training-week3",
+  Git will create a folder called "my-project".
+  Useful when you want a shorter or different local name.
+
+
+STEP 18: Clone a specific branch
+----------------------------------
+    git clone -b feature/db-utils https://github.com/USERNAME/REPO.git
+
+Explanation:
+  -b feature/db-utils  -> checks out that branch instead of main
+
+
+STEP 19: After cloning, enter the folder
+-----------------------------------------
+    cd ai-training-week3
+
+Then check everything looks right:
+    git status
+    git log --oneline
+    git remote -v
+
+
+________________________________________________________________________________
+SECTION 5: EVERYDAY WORKFLOW (after initial setup)
+________________________________________________________________________________
+
+The loop you repeat every day:
+
+STEP 20: Pull latest changes before starting work
+---------------------------------------------------
+    git pull
+
+Always do this first to get any changes your teammates (or past-you
+on another machine) pushed to GitHub.
+
+Explanation:
+  git pull = git fetch + git merge
+  It downloads new commits from GitHub and merges them into your branch.
+
+
+STEP 21: Make changes to your files
+-------------------------------------
+Edit, create, or delete files using your editor as normal.
+
+
+STEP 22: Check what changed
+-----------------------------
+    git status          <- which files changed
+    git diff            <- see exact line-by-line changes (unstaged)
+    git diff --staged   <- see changes already staged
+
+
+STEP 23: Stage the changes
+----------------------------
+    git add filename.py       <- stage one file
+    git add .                 <- stage all changed files
+    git add -p                <- interactively choose chunks to stage
+
+
+STEP 24: Commit
+----------------
+    git commit -m "feat: add student average score function"
+
+
+STEP 25: Push
+--------------
+    git push
+
+
+________________________________________________________________________________
+SECTION 6: BRANCHING WORKFLOW
+________________________________________________________________________________
+
+STEP 26: Create a feature branch
+----------------------------------
+    git checkout -b feature/add-reporting
+
+Explanation:
+  -b creates the branch AND switches to it in one command.
+  Always branch off main for new features or bug fixes.
+  Convention: feature/name, fix/name, docs/name, chore/name
+
+
+STEP 27: Work on the branch
+-----------------------------
+Make changes, then:
+    git add .
+    git commit -m "feat(report): add summary_report function"
+
+
+STEP 28: Push the branch to GitHub
+------------------------------------
+    git push -u origin feature/add-reporting
+
+
+STEP 29: Open a Pull Request on GitHub
+----------------------------------------
+  a) Go to your repo on GitHub
+  b) Click "Compare & pull request" (yellow banner appears after push)
+  c) Set base: main, compare: feature/add-reporting
+  d) Write a title and description
+  e) Click "Create pull request"
+  f) Review the Files changed tab
+  g) Click "Merge pull request" when ready
+
+
+STEP 30: Update your local main after merging the PR
+------------------------------------------------------
+    git checkout main
+    git pull
+    git branch -d feature/add-reporting    <- delete the local branch
+
+
+________________________________________________________________________________
+SECTION 7: USEFUL COMMANDS FOR DAILY USE
+________________________________________________________________________________
+
+VIEW HISTORY
+    git log                          full log with author, date, message
+    git log --oneline                one line per commit
+    git log --oneline --graph --all  visual branch graph
+
+UNDO THINGS
+    git restore filename.py          discard unsaved changes to a file
+    git reset HEAD filename.py       unstage a file (keep the changes)
+    git commit --amend               edit the last commit message
+    git reset --soft HEAD~1          undo last commit, keep files staged
+    git stash                        temporarily shelve uncommitted changes
+    git stash pop                    bring back shelved changes
+
+CHECK REMOTES
+    git remote -v                    list remotes and their URLs
+    git remote set-url origin URL    change the remote URL
+
+BRANCHES
+    git branch                       list all local branches
+    git branch -a                    list local + remote branches
+    git checkout main                switch to main branch
+    git branch -d branch-name        delete a merged branch
+    git branch -D branch-name        force delete (even if unmerged)
+
+COMPARE
+    git diff main..feature/name      see all differences between two branches
+
+
+________________________________________________________________________________
+SECTION 8: TROUBLESHOOTING COMMON ERRORS
+________________________________________________________________________________
+
+ERROR: "remote origin already exists"
+    Cause : You already ran git remote add origin before.
+    Fix   : git remote set-url origin https://github.com/USER/REPO.git
+
+ERROR: "failed to push — Updates were rejected"
+    Cause : Someone else pushed to GitHub and your local is behind.
+    Fix   : git pull --rebase
+            git push
+
+ERROR: "Please tell me who you are" (identity not set)
+    Fix   : git config --global user.name  "Your Name"
+            git config --global user.email "you@example.com"
+
+ERROR: "Authentication failed" or 403
+    Cause : You used your GitHub password instead of a PAT.
+    Fix   : Create a PAT (Section 1, Step 4) and use it as the password.
+            Then run: git credential reject
+            and push again, pasting the PAT when prompted.
+
+ERROR: "src refspec main does not match any"
+    Cause : You have no commits yet, so the branch does not exist.
+    Fix   : git add .
+            git commit -m "initial commit"
+            git push -u origin main
+
+ERROR: "fatal: not a git repository"
+    Cause : You are not inside a Git repo folder.
+    Fix   : cd into the correct folder, or run git init
+
+
+________________________________________________________________________________
+QUICK REFERENCE CARD
+________________________________________________________________________________
+
+  COMMAND                              WHAT IT DOES
+  ─────────────────────────────────── ────────────────────────────────────────
+  git init                             Create a new local repo
+  git clone <url>                      Download a repo from GitHub
+  git status                           Show what has changed
+  git add .                            Stage all changes
+  git commit -m "message"              Save a snapshot
+  git push                             Send commits to GitHub
+  git pull                             Get latest from GitHub
+  git log --oneline --graph --all      View branch history
+  git checkout -b branch-name          Create and switch to a new branch
+  git merge branch-name                Merge a branch into current branch
+  git remote -v                        Show connected remotes
+  git stash                            Temporarily save uncommitted work
+  git stash pop                        Restore stashed work
+  git diff                             Show unstaged changes
+  git restore filename                 Discard changes to a file
+
+================================================================================
+END OF GUIDE
+================================================================================

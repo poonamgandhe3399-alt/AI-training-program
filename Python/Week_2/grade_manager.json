@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "name": "Alice",
+        "grades": {
+            "Maths": 100,
+            "Science": 67,
+            "English": 61,
+            "History": 77
+        }
+    },
+    {
+        "id": 2,
+        "name": "Bob",
+        "grades": {
+            "Maths": 75,
+            "Science": 74,
+            "English": 68,
+            "History": 66
+        }
+    },
+    {
+        "id": 3,
+        "name": "Charlie",
+        "grades": {
+            "Maths": 94,
+            "Science": 65,
+            "English": 97,
+            "History": 87
+        }
+    },
+    {
+        "id": 4,
+        "name": "Diana",
+        "grades": {
+            "Maths": 62,
+            "Science": 61,
+            "English": 65,
+            "History": 73
+        }
+    }
+]
